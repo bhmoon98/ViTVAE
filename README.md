@@ -1,5 +1,5 @@
 # ViT-VAE
-This repo is the official implementation of "Learning Traces by Yourself: Blind Image Forgery
+My personal modification of "Learning Traces by Yourself: Blind Image Forgery
 Localization via Anomaly Detection with ViT-VAE". <br>
 
 <p align='center'>  
@@ -7,9 +7,19 @@ Localization via Anomaly Detection with ViT-VAE". <br>
 </p>
 
 # Installation
-The code requires Python 3.7 and PyTorch 1.7.
+The code requires Python 3.8.20 and PyTorch 1.11.0
+`
+conda create -n vitvae python=3.8
+conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch
+pip install -r requirements.txt
+`
 
 # Usage
+For training and validation use csv file.
+`
+bash script.sh
+`
+
 You can run test.py to generate the predicted results of the test image.<br>
 
 For testing:
