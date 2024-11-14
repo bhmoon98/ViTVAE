@@ -1,6 +1,7 @@
 # ViT-VAE
 My personal modification of "Learning Traces by Yourself: Blind Image Forgery
 Localization via Anomaly Detection with ViT-VAE". <br>
+Originally from https://github.com/media-sec-lab/ViT-VAE <br>
 
 <p align='center'>  
   <img src='https://github.com/media-sec-lab/ViT-VAE/blob/master/fig.png' width='700'/>
