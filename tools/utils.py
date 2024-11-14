@@ -60,15 +60,16 @@ def valid(dataloader, optimizer, net, device, exp_name, epoch, rank, coef):
             label = label.float().to(device)
             optimizer.zero_grad()
 
-            re_noise, prob, kld = net(noise)
+            # re_noise, prob, kld = net(noise)
+            prob = net(noise)
             noise = noise.view(noise.size(0), -1)
             label = label.view(-1, 1)
 
-            localization_loss = nn.MSELoss()(re_noise, noise)
+            # localization_loss = nn.MSELoss()(re_noise, noise)
             score_loss = nn.BCEWithLogitsLoss()(prob, label)
-            elbo = alpha * -localization_loss - beta * kld - gamma * score_loss
-            loss = -elbo
-            # loss = score_loss
+            # elbo = alpha * -localization_loss - beta * kld - gamma * score_loss
+            # loss = -elbo
+            loss = score_loss
             loss_all += loss.item()
             batch_all += 1
             running_loss += loss.item()
@@ -113,15 +114,16 @@ def train(dataloader, optimizer, net, device, epoch, rank, coef):
             continue
 
         optimizer.zero_grad()
-        re_noise, prob, kld = net(noise)
+        # re_noise, prob, kld = net(noise)
+        prob = net(noise)
         noise = noise.view(noise.size(0), -1)
         label = label.view(-1, 1)
 
-        localization_loss = nn.MSELoss()(re_noise, noise)
+        # localization_loss = nn.MSELoss()(re_noise, noise)
         score_loss = nn.BCEWithLogitsLoss()(prob, label)
-        elbo = alpha * -localization_loss - beta * kld - gamma * score_loss
-        loss = -elbo
-
+        # elbo = alpha * -localization_loss - beta * kld - gamma * score_loss
+        # loss = -elbo
+        loss = score_loss
         loss.backward()
         optimizer.step()
 

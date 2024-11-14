@@ -46,11 +46,11 @@ class VAE(nn.Module):
             nn.Linear(512, 1000),
             nn.BatchNorm1d(1000),
             nn.GELU(),
-            nn.Linear(1000, 3*64*64),
+            # nn.Linear(1000, 3*64*64),
         )
 
-        self.fc = nn.Linear(3*64*64, 1)
-
+        # self.fc = nn.Linear(3*64*64, 1)
+        self.fc = nn.Linear(1000, 1)
     def forward(self, noise):
         """
 
@@ -78,13 +78,14 @@ class VAE(nn.Module):
         x_hat = self.linear_up(h)
         x_prob = self.fc(x_hat)
         #
-        kld = 0.5 * torch.sum(
-            torch.pow(mu, 2) +
-            torch.pow(sigma, 2) -
-            torch.log(1e-8 + torch.pow(sigma, 2)) - 1
-        ) / (batchsz * m * m)
+        # kld = 0.5 * torch.sum(
+        #     torch.pow(mu, 2) +
+        #     torch.pow(sigma, 2) -
+        #     torch.log(1e-8 + torch.pow(sigma, 2)) - 1
+        # ) / (batchsz * m * m)
 
-        return x_hat, x_prob, kld
+        # return x_hat, x_prob, kld
+        return x_prob
     
 if __name__ == '__main__':
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
