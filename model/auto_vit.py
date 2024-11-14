@@ -1,5 +1,6 @@
 import  torch
 from    torch import nn
+# from model.my_vit import ViT
 from model.my_vit import ViT
 
 
@@ -46,12 +47,9 @@ class VAE(nn.Module):
             nn.BatchNorm1d(1000),
             nn.GELU(),
             nn.Linear(1000, 3*64*64),
-
         )
 
-
-
-
+        self.fc = nn.Linear(3*64*64, 1)
 
     def forward(self, noise):
         """
@@ -78,7 +76,7 @@ class VAE(nn.Module):
 
         # print(mu.shape)
         x_hat = self.linear_up(h)
-        x_hat = x_hat.reshape(batchsz,3,m,m)
+        x_prob = self.fc(x_hat)
         #
         kld = 0.5 * torch.sum(
             torch.pow(mu, 2) +
@@ -86,15 +84,13 @@ class VAE(nn.Module):
             torch.log(1e-8 + torch.pow(sigma, 2)) - 1
         ) / (batchsz * m * m)
 
-
-
-
-
-
-        return x_hat,kld
+        return x_hat, x_prob, kld
+    
 if __name__ == '__main__':
-    img = torch.randn(2, 3, 64, 64).cuda()
-    model = VAE().cuda()
-    out = model(img)
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    img = torch.randn(2, 3, 64, 64).to(device)
+    model = VAE().to(device)
+    print("Number of parameters: ", sum(p.numel() for p in model.parameters()))
+    out, prob, kld = model(img)
     print(out[0].shape)
 
