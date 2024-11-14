@@ -16,7 +16,6 @@ import wandb
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.utils.data import DataLoader, DistributedSampler
-import torch.multiprocessing as mp
 
 min_loss = 1000.0
 
@@ -76,17 +75,6 @@ class DeepfakeDataset(Dataset):
         # 텐서 변환
         noise = torch.Tensor(data)
         return data_idx, noise, label
-
-import os
-import torch
-import torch.distributed as dist
-from torch.nn.parallel import DistributedDataParallel as DDP
-from torch.utils.data import DataLoader, DistributedSampler
-import pandas as pd
-import argparse
-from tqdm import tqdm
-import wandb
-
 
 def main():
     # Argument parser
@@ -148,7 +136,7 @@ def main():
     os.makedirs(f"results/{exp_name}", exist_ok=True)
 
     # Training and validation loop
-    for epoch in range(args.epoch):
+    for epoch in tqdm(range(args.epoch), desc="Training Epochs"):
         train_sampler.set_epoch(epoch)  # Ensures proper shuffling for each epoch
         model.train()
         train_loss = train(train_dataloader, optimizer, model, device, epoch, rank, coef=args.coef)
