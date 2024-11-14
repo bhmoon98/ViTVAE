@@ -8,14 +8,18 @@ Localization via Anomaly Detection with ViT-VAE". <br>
 
 # Installation
 The code requires Python 3.8.20 and PyTorch 1.11.0
+
 `
 conda create -n vitvae python=3.8
+
 conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch
+
 pip install -r requirements.txt
 `
 
 # Usage
 For training and validation use csv file.
+
 `
 bash script.sh
 `
